@@ -8,7 +8,7 @@ function invertColors(imageData) {
     return imageData;
 }
 
-function processImage(file, index, totalFiles) {
+function processImage(file, index) {
     const reader = new FileReader();
     reader.onload = function(e) {
         const img = new Image();
@@ -27,7 +27,6 @@ function processImage(file, index, totalFiles) {
                 link.href = URL.createObjectURL(blob);
                 link.download = file.name;
                 link.click();
-                updateProgress(index, totalFiles);
             }, 'image/jpeg');
         }
         img.src = e.target.result;
@@ -41,14 +40,7 @@ function invertImages() {
 
     if (files.length === 0) return;
 
-    updateProgress(0, files.length);
-
-    files.forEach((file, index) => {
-        processImage(file, index + 1, files.length);
+    files.forEach(file => {
+        processImage(file);
     });
-}
-
-function updateProgress(current, total) {
-    const progress = document.getElementById('progress');
-    progress.textContent = `Processing... ${current} of ${total}`;
 }
